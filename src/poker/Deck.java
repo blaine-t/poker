@@ -1,26 +1,32 @@
 package poker;
 
-public class Deck {
-    // Create the deck size by multiplying amount of suits by amount of values
-    private static int DECK_SIZE = Suit.values().length * Value.values().length;
+import java.util.Collections;
+import java.util.Stack;
 
-    private Card[] cards;
-    
+public class Deck {
+    private Stack<Card> cards = new Stack<Card>();
+
     public Deck() {
-        cards = new Card[DECK_SIZE];
-        int index = 0;
-        for(Suit suit : Suit.values()) {
-            for(Value value : Value.values()) {
-                cards[index] = new Card(suit, value);
-                index++;
+        for (Suit suit : Suit.values()) {
+            for (Value value : Value.values()) {
+                cards.push(new Card(suit, value));
             }
         }
     }
-    
+
+    public void shuffle() {
+        Collections.shuffle(cards);
+    }
+
+    public Card takeTopCard() {
+        return cards.pop();
+    }
+
     @Override
+    // TODO: REMOVE AS IS ONLY FOR DEBUGGING
     public String toString() {
         String returnStr = "";
-        for(Card card : cards) {
+        for (Card card : cards) {
             returnStr += card.toString() + '\n';
         }
         return returnStr;

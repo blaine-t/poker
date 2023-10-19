@@ -2,7 +2,7 @@ package poker;
 
 public class Poker {
     public static void main(String[] args) {
-        Deck deck = new Deck();
-        System.out.println(deck.toString());
+        Table table = new Table();
+        System.out.println(table.draw().toString());
     }
 }
