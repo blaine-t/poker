@@ -2,6 +2,8 @@ package poker;
 
 import java.util.ArrayList;
 
+import players.Player;
+
 public class Table {
     private ArrayList<Player> players;
     private Player smallBlind;
@@ -18,18 +20,18 @@ public class Table {
         deck.shuffle();
     }
 
-    public void addPlayer(Player player) {
+    protected void addPlayer(Player player) {
         players.add(player);
     }
 
-    public void deal() {
+    protected void deal() {
         for (Player player : players) {
             Card[] hand = { deck.takeTopCard(), deck.takeTopCard() };
             player.setHand(hand);
         }
     }
 
-    public void placeCards(int cards) {
+    protected void placeCards(int cards) {
         // Burn a card
         deck.takeTopCard();
         // Play the other cards
@@ -38,12 +40,16 @@ public class Table {
         }
         System.out.println(faceUpCards.toString());
     }
+    
+    public ArrayList<Card> getFaceUpCards() {
+        return faceUpCards;
+    }
 
     public int getPot() {
         return pot;
     }
 
-    public void setPot(int pot) {
+    protected void setPot(int pot) {
         this.pot = pot;
     }
 }
