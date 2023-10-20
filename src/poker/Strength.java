@@ -2,16 +2,16 @@ package poker;
 
 public class Strength {
     private Rank rank;
-    private Value value;
+    private Card[] hand;
     
-    public Strength(Rank rank, Value value) {
+    public Strength(Rank rank, Card[] hand) {
         this.rank = rank;
-        this.value = value;
+        this.hand = hand;
     }
     
     @Override
     // TODO: REMOVE AS IS ONLY FOR DEBUGGING
     public String toString() {
-        return (rank + " with highest card being: " + value);
+        return (rank + " with highest card being: " + hand[hand.length - 1] + '\n' + "Hand was: " + hand.toString());
     }
 }

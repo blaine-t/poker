@@ -84,6 +84,8 @@ public class Player {
     private ArrayList<ArrayList<Card>> getSets(ArrayList<Card> cards) {
         ArrayList<ArrayList<Card>> sets = new ArrayList<ArrayList<Card>>();
         ArrayList<Card> cardsMut = new ArrayList<Card>(cards);
+        // Make larger cards show up first in sets arrayList by reversing
+        Collections.reverse(cardsMut);
         while (cardsMut.size() > 0) {
             ArrayList<Card> set = new ArrayList<Card>();
             set.add(cardsMut.remove(0));
@@ -105,28 +107,41 @@ public class Player {
         for (Card card : hand) {
             cardsInPlay.add(card);
         }
-        // Sort by value
+        // Sort by value to be able to check for straight and find high card
         cardsInPlay.sort(Comparator.comparing(Card::getValue));
-        System.out.println(cardsInPlay.toString());
+
+        // If flush get the cards that made that flush
         ArrayList<Card> flushCards = checkFlush(cardsInPlay);
         Value flushHighValue = null;
         // Check for royal and straight flush
         if (flushCards != null) {
             flushHighValue = flushCards.get(flushCards.size() - 1).getValue();
-            if (checkStraight(flushCards) != null) {
+            Card[] straight = checkStraight(flushCards);
+            if (straight != null) {
+                // If last card in straight is an Ace that means it is a royal flush
                 if (flushHighValue == Value.ACE) {
-                    return new Strength(Rank.ROYAL_FLUSH, flushHighValue);
-                } else {
-                    return new Strength(Rank.STRAIGHT_FLUSH, flushHighValue);
+                    return new Strength(Rank.ROYAL_FLUSH, straight);
                 }
+                // Otherwise it is just a normal straight flush
+                return new Strength(Rank.STRAIGHT_FLUSH, straight);
             }
+            // Can't declare flush yet because there are better hands to check first
         }
 
-        // Check for four of a kind
+        // Get sets for future use checking sets
         ArrayList<ArrayList<Card>> sets = getSets(cardsInPlay);
-        for (ArrayList<Card> set : sets) {
+
+        // Check for four of a kind
+        for (int i = 0; i < sets.size(); i++) {
+            ArrayList<Card> set = sets.get(i);
             if (set.size() >= 4) {
-                return new Strength(Rank.FOUR_OF_A_KIND, set.get(0).getValue());
+                if(i == 0) {
+                    set.add(sets.get(1).get(0));
+                } else {
+                    set.add(sets.get(0).get(0));
+                }
+                Card[] combo = set.toArray(new Card[set.size()]);
+                return new Strength(Rank.FOUR_OF_A_KIND, combo);
             }
         }
 
@@ -134,8 +149,8 @@ public class Player {
         Value highValue = Value.TWO;
         boolean setOf2 = false;
         boolean setOf3 = false;
-        // TODO: Fix picking lowest value full house and thus pairs
-        for (ArrayList<Card> set : sets) {
+        for (int i = 0; i < sets.size(); i++) {
+            ArrayList<Card> set = sets.get(i);
             Value setValue = set.get(0).getValue();
             // If set of 3 found and needed
             if (!setOf3 && set.size() >= 3) {
@@ -149,6 +164,9 @@ public class Player {
                 if (highValue.ordinal() < setValue.ordinal()) {
                     highValue = setValue;
                 }
+                // Remove set from list to be able to test for two pair later
+                sets.remove(i);
+                i--;
             } else {
                 continue;
             }
@@ -156,27 +174,41 @@ public class Player {
                 return new Strength(Rank.FULL_HOUSE, highValue);
             }
         }
-        
+
         // Check for flush
         if (flushCards != null) {
             return new Strength(Rank.FLUSH, flushHighValue);
         }
-        
+
         // Check for straight
         Card[] straight = checkStraight(cardsInPlay);
         if (straight != null) {
             return new Strength(Rank.STRAIGHT, straight[4].getValue());
         }
-        
+
         // Check for three of a kind
-        if(setOf3) {
+        if (setOf3) {
+            // highValue is just for set of 3 since if set of 2 was found full house would have returned
             return new Strength(Rank.THREE_OF_A_KIND, highValue);
         }
-        
-        // Check for two pair
+
+        // Check for two pair and pair
         if (setOf2) {
-            return new Strength(Rank.TWO_PAIR, highValue);
+            // Check other sets to see if there is another pair
+            for (ArrayList<Card> set : sets) {
+                // If there is check to see if right highValue is set then return
+                if (set.size() >= 2) {
+                    Value setValue = set.get(0).getValue();
+                    if (highValue.ordinal() < setValue.ordinal()) {
+                        highValue = setValue;
+                    }
+                    return new Strength(Rank.TWO_PAIR, highValue);
+                }
+            }
+            // If no second pair found return a standard pair
+            return new Strength(Rank.PAIR, highValue);
         }
+        // If no hands are found just return the highest value card
         return new Strength(Rank.HIGH_CARD, cardsInPlay.get(cardsInPlay.size() - 1).getValue());
     }
 
