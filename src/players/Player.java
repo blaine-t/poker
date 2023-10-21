@@ -22,27 +22,27 @@ public class Player {
     }
 
     private Card[] checkStraight(ArrayList<Card> cards) {
-        int streak = 1;
+        ArrayList<Card> returnCards = new ArrayList<Card>();
+        returnCards.add(cards.get(0));
         for (int i = 0; i < cards.size() - 1; i++) {
             Card card1 = cards.get(i);
             Card card2 = cards.get(i + 1);
             int card1Value = card1.getValue().ordinal();
             int card2Value = card2.getValue().ordinal();
             // If current card is 1 less than card after
-            if ((card1Value + 1) == card2Value) {
-                streak++;
+            if (card1Value == (card2Value - 1)) {
+                returnCards.add(card2);
             } else if (card1Value == card2Value) {
                 // Duplicate of card so don't break streak
                 continue;
             } else {
                 // Otherwise break streak
-                streak = 1;
+                returnCards.clear();
+                returnCards.add(card2);
             }
             // If straight found
-            if (streak >= 5) {
-                Card[] returnCards = { cards.get(i - 3), cards.get(i - 2), cards.get(i - 1), cards.get(i),
-                        cards.get(i + 1) };
-                return returnCards;
+            if (returnCards.size() >= 5) {
+                return (Card[]) returnCards.toArray();
             }
         }
         return null;
@@ -84,8 +84,6 @@ public class Player {
     private ArrayList<ArrayList<Card>> getSets(ArrayList<Card> cards) {
         ArrayList<ArrayList<Card>> sets = new ArrayList<ArrayList<Card>>();
         ArrayList<Card> cardsMut = new ArrayList<Card>(cards);
-        // Make larger cards show up first in sets arrayList by reversing
-        Collections.reverse(cardsMut);
         while (cardsMut.size() > 0) {
             ArrayList<Card> set = new ArrayList<Card>();
             set.add(cardsMut.remove(0));
@@ -108,18 +106,18 @@ public class Player {
             cardsInPlay.add(card);
         }
         // Sort by value to be able to check for straight and find high card
-        cardsInPlay.sort(Comparator.comparing(Card::getValue));
+        cardsInPlay.sort(Comparator.comparing(Card::getValue, Comparator.reverseOrder()));
+        System.out.println(cardsInPlay.toString());
 
         // If flush get the cards that made that flush
         ArrayList<Card> flushCards = checkFlush(cardsInPlay);
         Value flushHighValue = null;
         // Check for royal and straight flush
         if (flushCards != null) {
-            flushHighValue = flushCards.get(flushCards.size() - 1).getValue();
             Card[] straight = checkStraight(flushCards);
             if (straight != null) {
-                // If last card in straight is an Ace that means it is a royal flush
-                if (flushHighValue == Value.ACE) {
+                // If first card in a straight is an ACE that means it is a royal flush
+                if (straight[0].getValue() == Value.ACE) {
                     return new Strength(Rank.ROYAL_FLUSH, straight);
                 }
                 // Otherwise it is just a normal straight flush
@@ -135,10 +133,10 @@ public class Player {
         for (int i = 0; i < sets.size(); i++) {
             ArrayList<Card> set = sets.get(i);
             if (set.size() >= 4) {
-                if(i == 0) {
+                if (i == 0) {
                     set.add(sets.get(1).get(0));
                 } else {
-                    set.add(sets.get(0).get(0));
+                    set.add(0, sets.get(0).get(0));
                 }
                 Card[] combo = set.toArray(new Card[set.size()]);
                 return new Strength(Rank.FOUR_OF_A_KIND, combo);
@@ -146,70 +144,112 @@ public class Player {
         }
 
         // Check for full house
-        Value highValue = Value.TWO;
-        boolean setOf2 = false;
-        boolean setOf3 = false;
+        ArrayList<Card> setOf2 = null;
+        ArrayList<Card> setOf3 = null;
+        Card[] cards = new Card[5];
         for (int i = 0; i < sets.size(); i++) {
             ArrayList<Card> set = sets.get(i);
-            Value setValue = set.get(0).getValue();
+            int k = 0;
             // If set of 3 found and needed
-            if (!setOf3 && set.size() >= 3) {
-                setOf3 = true;
-                if (highValue.ordinal() < setValue.ordinal()) {
-                    highValue = setValue;
+            if (setOf3 == null && set.size() >= 3) {
+                setOf3 = set;
+                if (setOf2 != null) {
+                    // If don't have a set of 2 put in last slot
+                    k = 2;
                 }
-            } else if (!setOf2 && set.size() >= 2) {
+                for (int j = 0; j < 3; j++) {
+                    cards[j + k] = set.get(j);
+                }
+            } else if (setOf2 == null && set.size() >= 2) {
                 // If set of 2 found and needed
-                setOf2 = true;
-                if (highValue.ordinal() < setValue.ordinal()) {
-                    highValue = setValue;
-                }
-                // Remove set from list to be able to test for two pair later
-                sets.remove(i);
+                setOf2 = sets.remove(i);
                 i--;
+                if (setOf3 != null) {
+                    // If don't have a set of 3 put in last slot
+                    k = 3;
+                    // Remove set from list to be able to test for two pair later
+                }
+                for (int j = 0; j < 2; j++) {
+                    cards[j + k] = set.get(j);
+                }
             } else {
                 continue;
             }
-            if (setOf2 && setOf3) {
-                return new Strength(Rank.FULL_HOUSE, highValue);
+            if (setOf2 != null && setOf3 != null) {
+                return new Strength(Rank.FULL_HOUSE, cards);
             }
         }
 
         // Check for flush
         if (flushCards != null) {
-            return new Strength(Rank.FLUSH, flushHighValue);
+            while (flushCards.size() > 5) {
+                flushCards.remove(0);
+            }
+            Card[] returnCards = flushCards.toArray(new Card[flushCards.size()]);
+            return new Strength(Rank.FLUSH, returnCards);
         }
 
         // Check for straight
         Card[] straight = checkStraight(cardsInPlay);
         if (straight != null) {
-            return new Strength(Rank.STRAIGHT, straight[4].getValue());
+            return new Strength(Rank.STRAIGHT, straight);
         }
 
         // Check for three of a kind
-        if (setOf3) {
-            // highValue is just for set of 3 since if set of 2 was found full house would have returned
-            return new Strength(Rank.THREE_OF_A_KIND, highValue);
+        if (setOf3 != null) {
+            int i = 0;
+            while (setOf3.size() < 5) {
+                Card card = cardsInPlay.get(i);
+                if (!setOf3.contains(card)) {
+                    setOf3.add(i, cardsInPlay.get(i));
+                }
+                i++;
+            }
+            return new Strength(Rank.THREE_OF_A_KIND, setOf3.toArray(new Card[setOf3.size()]));
         }
 
         // Check for two pair and pair
-        if (setOf2) {
+        if (setOf2 != null) {
+            // Initialize returnCards
+            ArrayList<Card> returnCards = new ArrayList<Card>();
+            for (int i = 0; i < setOf2.size(); i++) {
+                returnCards.add(setOf2.get(i));
+            }
             // Check other sets to see if there is another pair
             for (ArrayList<Card> set : sets) {
                 // If there is check to see if right highValue is set then return
                 if (set.size() >= 2) {
-                    Value setValue = set.get(0).getValue();
-                    if (highValue.ordinal() < setValue.ordinal()) {
-                        highValue = setValue;
+                    for (int i = 0; i < set.size(); i++) {
+                        returnCards.add(set.get(i));
                     }
-                    return new Strength(Rank.TWO_PAIR, highValue);
+                    int i = 0;
+                    while (returnCards.size() < 5) {
+                        Card card = cardsInPlay.get(i);
+                        if (!returnCards.contains(card)) {
+                            returnCards.add(i, cardsInPlay.get(i));
+                        }
+                        i++;
+                    }
+                    return new Strength(Rank.TWO_PAIR, returnCards.toArray(new Card[returnCards.size()]));
                 }
             }
             // If no second pair found return a standard pair
-            return new Strength(Rank.PAIR, highValue);
+            int i = 0;
+            while (returnCards.size() < 5) {
+                Card card = cardsInPlay.get(i);
+                if (!returnCards.contains(card)) {
+                    returnCards.add(i, cardsInPlay.get(i));
+                }
+                i++;
+            }
+            return new Strength(Rank.PAIR, returnCards.toArray(new Card[returnCards.size()]));
         }
         // If no hands are found just return the highest value card
-        return new Strength(Rank.HIGH_CARD, cardsInPlay.get(cardsInPlay.size() - 1).getValue());
+        Card[] returnCards = new Card[5];
+        for(int i = 0; i < 5; i++) {
+            returnCards[i] = cardsInPlay.get(i);
+        }
+        return new Strength(Rank.HIGH_CARD, returnCards);
     }
 
     public Card[] getHand() {
