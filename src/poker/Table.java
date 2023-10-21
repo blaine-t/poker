@@ -20,6 +20,12 @@ public class Table {
         deck.shuffle();
     }
 
+    public Table(Player player) {
+        this();
+        addPlayer(player);
+        
+    }
+    
     protected void addPlayer(Player player) {
         players.add(player);
     }

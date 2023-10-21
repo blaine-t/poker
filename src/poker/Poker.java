@@ -13,6 +13,6 @@ public class Poker {
         table.placeCards(1);
         table.placeCards(1);
         table.deal();
-        System.out.println(player1.checkStrength().toString());
+        System.out.println(player1.checkStrength(player1.getCardsInPlay()).toString());
     }
 }

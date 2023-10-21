@@ -30,7 +30,7 @@ public class Player {
             int card1Value = card1.getValue().ordinal();
             int card2Value = card2.getValue().ordinal();
             // If current card is 1 less than card after
-            if (card1Value == (card2Value - 1)) {
+            if ((card1Value - 1) == (card2Value)) {
                 returnCards.add(card2);
             } else if (card1Value == card2Value) {
                 // Duplicate of card so don't break streak
@@ -42,7 +42,7 @@ public class Player {
             }
             // If straight found
             if (returnCards.size() >= 5) {
-                return (Card[]) returnCards.toArray();
+                return returnCards.toArray(new Card[returnCards.size()]);
             }
         }
         return null;
@@ -99,12 +99,18 @@ public class Player {
         return sets;
     }
 
-    public Strength checkStrength() {
+    // TODO: Change to protected after testing
+    public ArrayList<Card> getCardsInPlay() {
         // Create arrayList of all cards available to the user
         ArrayList<Card> cardsInPlay = new ArrayList<Card>(table.getFaceUpCards());
         for (Card card : hand) {
             cardsInPlay.add(card);
         }
+        return cardsInPlay;
+    }
+
+    public Strength checkStrength(ArrayList<Card> cardsInPlay) {
+
         // Sort by value to be able to check for straight and find high card
         cardsInPlay.sort(Comparator.comparing(Card::getValue, Comparator.reverseOrder()));
         System.out.println(cardsInPlay.toString());
@@ -246,7 +252,7 @@ public class Player {
         }
         // If no hands are found just return the highest value card
         Card[] returnCards = new Card[5];
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             returnCards[i] = cardsInPlay.get(i);
         }
         return new Strength(Rank.HIGH_CARD, returnCards);

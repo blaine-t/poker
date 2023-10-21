@@ -18,6 +18,15 @@ public class Card {
     }
     
     @Override
+    public boolean equals(Object o) {
+        Card otherCard = (Card) o;
+        if (this.suit == otherCard.getSuit() && this.value == otherCard.getValue()) {
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
     // TODO: REMOVE AS IS ONLY FOR DEBUGGING
     public String toString() {
         return (value + " of " + suit + "S");
