@@ -1,7 +1,6 @@
 package players;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 import poker.Card;
@@ -116,7 +115,6 @@ public class Player {
 
         // If flush get the cards that made that flush
         ArrayList<Card> flushCards = checkFlush(cardsInPlay);
-        Value flushHighValue = null;
         // Check for royal and straight flush
         if (flushCards != null) {
             Card[] straight = checkStraight(flushCards);

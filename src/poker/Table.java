@@ -23,9 +23,9 @@ public class Table {
     public Table(Player player) {
         this();
         addPlayer(player);
-        
+
     }
-    
+
     protected void addPlayer(Player player) {
         players.add(player);
     }
@@ -45,7 +45,7 @@ public class Table {
             faceUpCards.add(deck.takeTopCard());
         }
     }
-    
+
     public ArrayList<Card> getFaceUpCards() {
         return faceUpCards;
     }

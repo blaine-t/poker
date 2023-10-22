@@ -324,7 +324,7 @@ public class PlayerTest {
         // test
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void testStraight5() {
         // setup
@@ -348,7 +348,7 @@ public class PlayerTest {
         // test
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void testStraight6() {
         // setup
@@ -399,7 +399,7 @@ public class PlayerTest {
         // test
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void testFlush5() {
         // setup
@@ -423,7 +423,7 @@ public class PlayerTest {
         // test
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void testFlush6() {
         // setup
@@ -474,7 +474,7 @@ public class PlayerTest {
         // test
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void testFullHouse5() {
         // setup
@@ -498,7 +498,7 @@ public class PlayerTest {
         // test
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void testFullHouse6() {
         // setup
@@ -573,7 +573,7 @@ public class PlayerTest {
         // test
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void testFourOfAKind6() {
         // setup
@@ -598,7 +598,7 @@ public class PlayerTest {
         // test
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void testFourOfAKind7() {
         // setup
@@ -624,7 +624,7 @@ public class PlayerTest {
         // test
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void testStraightFlush5() {
         // setup
@@ -648,7 +648,7 @@ public class PlayerTest {
         // test
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void testStraightFlush6() {
         // setup
@@ -723,7 +723,7 @@ public class PlayerTest {
         // test
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void testRoyalFlush6() {
         // setup
@@ -748,7 +748,7 @@ public class PlayerTest {
         // test
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void testRoyalFlush7() {
         // setup

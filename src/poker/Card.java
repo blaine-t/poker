@@ -12,11 +12,11 @@ public class Card {
     public Suit getSuit() {
         return suit;
     }
-    
+
     public Value getValue() {
         return value;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         Card otherCard = (Card) o;
@@ -25,7 +25,7 @@ public class Card {
         }
         return false;
     }
-    
+
     @Override
     // TODO: REMOVE AS IS ONLY FOR DEBUGGING
     public String toString() {
