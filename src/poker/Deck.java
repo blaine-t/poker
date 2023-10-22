@@ -14,11 +14,11 @@ public class Deck {
         }
     }
 
-    public void shuffle() {
+    protected void shuffle() {
         Collections.shuffle(cards);
     }
 
-    public Card takeTopCard() {
+    protected Card takeTopCard() {
         return cards.pop();
     }
 

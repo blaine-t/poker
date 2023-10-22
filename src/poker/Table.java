@@ -1,6 +1,7 @@
 package poker;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import players.Player;
 
@@ -56,5 +57,24 @@ public class Table {
 
     protected void setPot(int pot) {
         this.pot = pot;
+    }
+
+    protected Player findWinner() {
+        Strength[] strengths = new Strength[players.size()];
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+            Strength strength = player.checkStrength(null);
+            player.setStrength(strength);
+            strengths[i] = strength;
+        }
+        System.out.println(Arrays.toString(strengths));
+        Arrays.sort(strengths);
+        Strength highestStrength = strengths[strengths.length - 1];
+        for (Player player : players) {
+            if (highestStrength == player.getStrength()) {
+                return player;
+            }
+        }
+        return null;
     }
 }

@@ -20,10 +20,15 @@ public class Player {
     private int balance;
     private Card[] hand;
     private Table table;
+    private Strength strength;
 
     public Player(Table table) {
         this.balance = STARTING_BALANCE;
         this.table = table;
+    }
+    
+    public void setHand(Card[] hand) {
+        this.hand = hand;
     }
 
     private Card[] checkStraight(ArrayList<Card> cards) {
@@ -115,6 +120,9 @@ public class Player {
     }
 
     public Strength checkStrength(ArrayList<Card> cardsInPlay) {
+        if (cardsInPlay == null) {
+            cardsInPlay = getCardsInPlay();
+        }
 
         // Sort by value to be able to check for straight and find high card
         cardsInPlay.sort(Comparator.comparing(Card::getValue, Comparator.reverseOrder()));
@@ -244,5 +252,13 @@ public class Player {
             returnCards[i] = cardsInPlay.get(i);
         }
         return new Strength(Rank.HIGH_CARD, returnCards);
+    }
+    
+    public Strength getStrength() {
+        return strength;
+    }
+    
+    public void setStrength(Strength strength) {
+        this.strength = strength;
     }
 }
