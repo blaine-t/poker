@@ -154,5 +154,135 @@ public class PlayerTest {
         // test
         assertEquals(expected,result);
     }
+    
+    @Test
+    public void testFlush() {
+        // setup
+        ArrayList<Card> cards = new ArrayList<Card>();
+        cards.add(new Card(Suit.CLUB, Value.QUEEN));
+        cards.add(new Card(Suit.CLUB, Value.SIX));
+        cards.add(new Card(Suit.CLUB, Value.TEN));
+        cards.add(new Card(Suit.CLUB, Value.SEVEN));
+        cards.add(new Card(Suit.HEART, Value.NINE));
+        cards.add(new Card(Suit.SPADE, Value.EIGHT));
+        cards.add(new Card(Suit.CLUB, Value.NINE));
+        Card[] hand = new Card[5];
+        hand[0] = new Card(Suit.CLUB, Value.QUEEN);
+        hand[1] = new Card(Suit.CLUB, Value.TEN);
+        hand[2] = new Card(Suit.CLUB, Value.NINE);
+        hand[3] = new Card(Suit.CLUB, Value.SEVEN);
+        hand[4] = new Card(Suit.CLUB, Value.SIX);
+        Strength expected = new Strength(Rank.FLUSH, hand);
+        
+        // execute
+        Strength result = player.checkStrength(cards);
+        
+        // test
+        assertEquals(expected,result);
+    }
+    
+    @Test
+    public void testFullHouse() {
+        // setup
+        ArrayList<Card> cards = new ArrayList<Card>();
+        cards.add(new Card(Suit.CLUB, Value.QUEEN));
+        cards.add(new Card(Suit.HEART, Value.QUEEN));
+        cards.add(new Card(Suit.CLUB, Value.TEN));
+        cards.add(new Card(Suit.CLUB, Value.SEVEN));
+        cards.add(new Card(Suit.HEART, Value.NINE));
+        cards.add(new Card(Suit.SPADE, Value.TEN));
+        cards.add(new Card(Suit.DIAMOND, Value.QUEEN));
+        Card[] hand = new Card[5];
+        hand[0] = new Card(Suit.CLUB, Value.QUEEN);
+        hand[1] = new Card(Suit.HEART, Value.QUEEN);
+        hand[2] = new Card(Suit.DIAMOND, Value.QUEEN);
+        hand[3] = new Card(Suit.CLUB, Value.TEN);
+        hand[4] = new Card(Suit.SPADE, Value.TEN);
+        Strength expected = new Strength(Rank.FULL_HOUSE, hand);
+        
+        // execute
+        Strength result = player.checkStrength(cards);
+        
+        // test
+        assertEquals(expected,result);
+    }
+    
+    @Test
+    public void testFourOfAKind() {
+        // setup
+        ArrayList<Card> cards = new ArrayList<Card>();
+        cards.add(new Card(Suit.CLUB, Value.QUEEN));
+        cards.add(new Card(Suit.HEART, Value.QUEEN));
+        cards.add(new Card(Suit.CLUB, Value.TEN));
+        cards.add(new Card(Suit.CLUB, Value.ACE));
+        cards.add(new Card(Suit.HEART, Value.NINE));
+        cards.add(new Card(Suit.SPADE, Value.QUEEN));
+        cards.add(new Card(Suit.DIAMOND, Value.QUEEN));
+        Card[] hand = new Card[5];
+        hand[0] = new Card(Suit.CLUB, Value.ACE);
+        hand[1] = new Card(Suit.CLUB, Value.QUEEN);
+        hand[2] = new Card(Suit.HEART, Value.QUEEN);
+        hand[3] = new Card(Suit.SPADE, Value.QUEEN);
+        hand[4] = new Card(Suit.DIAMOND, Value.QUEEN);
+        Strength expected = new Strength(Rank.FOUR_OF_A_KIND, hand);
+        
+        // execute
+        Strength result = player.checkStrength(cards);
+        
+        // test
+        assertEquals(expected,result);
+    }
+    
+    @Test
+    public void testStraightFlush() {
+        // setup
+        ArrayList<Card> cards = new ArrayList<Card>();
+        cards.add(new Card(Suit.CLUB, Value.JACK));
+        cards.add(new Card(Suit.CLUB, Value.SEVEN));
+        cards.add(new Card(Suit.CLUB, Value.TEN));
+        cards.add(new Card(Suit.CLUB, Value.EIGHT));
+        cards.add(new Card(Suit.HEART, Value.NINE));
+        cards.add(new Card(Suit.SPADE, Value.EIGHT));
+        cards.add(new Card(Suit.CLUB, Value.NINE));
+        Card[] hand = new Card[5];
+        hand[0] = new Card(Suit.CLUB, Value.JACK);
+        hand[1] = new Card(Suit.CLUB, Value.TEN);
+        hand[2] = new Card(Suit.CLUB, Value.NINE);
+        hand[3] = new Card(Suit.CLUB, Value.EIGHT);
+        hand[4] = new Card(Suit.CLUB, Value.SEVEN);
+        Strength expected = new Strength(Rank.STRAIGHT_FLUSH, hand);
+        
+        // execute
+        Strength result = player.checkStrength(cards);
+        
+        // test
+        assertEquals(expected,result);
+    }
+    
+    @Test
+    public void testRoyalFlush() {
+        // setup
+        ArrayList<Card> cards = new ArrayList<Card>();
+        cards.add(new Card(Suit.CLUB, Value.JACK));
+        cards.add(new Card(Suit.CLUB, Value.TEN));
+        cards.add(new Card(Suit.CLUB, Value.QUEEN));
+        cards.add(new Card(Suit.CLUB, Value.KING));
+        cards.add(new Card(Suit.HEART, Value.NINE));
+        cards.add(new Card(Suit.SPADE, Value.EIGHT));
+        cards.add(new Card(Suit.CLUB, Value.ACE));
+        Card[] hand = new Card[5];
+        hand[0] = new Card(Suit.CLUB, Value.ACE);
+        hand[1] = new Card(Suit.CLUB, Value.KING);
+        hand[2] = new Card(Suit.CLUB, Value.QUEEN);
+        hand[3] = new Card(Suit.CLUB, Value.JACK);
+        hand[4] = new Card(Suit.CLUB, Value.TEN);
+        Strength expected = new Strength(Rank.ROYAL_FLUSH, hand);
+        
+        // execute
+        Strength result = player.checkStrength(cards);
+        
+        // test
+        assertEquals(expected,result);
+    }
 
 }

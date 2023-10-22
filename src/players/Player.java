@@ -113,7 +113,6 @@ public class Player {
 
         // Sort by value to be able to check for straight and find high card
         cardsInPlay.sort(Comparator.comparing(Card::getValue, Comparator.reverseOrder()));
-        System.out.println(cardsInPlay.toString());
 
         // If flush get the cards that made that flush
         ArrayList<Card> flushCards = checkFlush(cardsInPlay);

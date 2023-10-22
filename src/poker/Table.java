@@ -44,7 +44,6 @@ public class Table {
         for (int i = 0; i < cards; i++) {
             faceUpCards.add(deck.takeTopCard());
         }
-        System.out.println(faceUpCards.toString());
     }
     
     public ArrayList<Card> getFaceUpCards() {
