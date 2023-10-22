@@ -11,6 +11,12 @@ import poker.Value;
 
 public class Player {
     private static int STARTING_BALANCE = 10000;
+    private static int MAX_CARDS = 7;
+    private static int HAND_SIZE = 5;
+    private static int SET_4_SIZE = 4;
+    private static int SET_3_SIZE = 3;
+    private static int SET_2_SIZE = 2;
+
     private int balance;
     private Card[] hand;
     private Table table;
@@ -21,7 +27,7 @@ public class Player {
     }
 
     private Card[] checkStraight(ArrayList<Card> cards) {
-        ArrayList<Card> returnCards = new ArrayList<Card>();
+        ArrayList<Card> returnCards = new ArrayList<Card>(HAND_SIZE);
         returnCards.add(cards.get(0));
         for (int i = 0; i < cards.size() - 1; i++) {
             Card card1 = cards.get(i);
@@ -40,18 +46,18 @@ public class Player {
                 returnCards.add(card2);
             }
             // If straight found
-            if (returnCards.size() >= 5) {
-                return returnCards.toArray(new Card[returnCards.size()]);
+            if (returnCards.size() >= HAND_SIZE) {
+                return returnCards.toArray(new Card[HAND_SIZE]);
             }
         }
         return null;
     }
 
     private ArrayList<Card> checkFlush(ArrayList<Card> cards) {
-        ArrayList<Card> clubs = new ArrayList<Card>();
-        ArrayList<Card> diamonds = new ArrayList<Card>();
-        ArrayList<Card> hearts = new ArrayList<Card>();
-        ArrayList<Card> spades = new ArrayList<Card>();
+        ArrayList<Card> clubs = new ArrayList<Card>(MAX_CARDS);
+        ArrayList<Card> diamonds = new ArrayList<Card>(MAX_CARDS);
+        ArrayList<Card> hearts = new ArrayList<Card>(MAX_CARDS);
+        ArrayList<Card> spades = new ArrayList<Card>(MAX_CARDS);
         for (Card card : cards) {
             switch (card.getSuit()) {
                 case CLUB:
@@ -67,13 +73,13 @@ public class Player {
                     spades.add(card);
             }
         }
-        if (clubs.size() >= 5) {
+        if (clubs.size() >= HAND_SIZE) {
             return clubs;
-        } else if (diamonds.size() >= 5) {
+        } else if (diamonds.size() >= HAND_SIZE) {
             return diamonds;
-        } else if (hearts.size() >= 5) {
+        } else if (hearts.size() >= HAND_SIZE) {
             return hearts;
-        } else if (spades.size() >= 5) {
+        } else if (spades.size() >= HAND_SIZE) {
             return spades;
         } else {
             return null;
@@ -81,10 +87,10 @@ public class Player {
     }
 
     private ArrayList<ArrayList<Card>> getSets(ArrayList<Card> cards) {
-        ArrayList<ArrayList<Card>> sets = new ArrayList<ArrayList<Card>>();
+        ArrayList<ArrayList<Card>> sets = new ArrayList<ArrayList<Card>>(MAX_CARDS);
         ArrayList<Card> cardsMut = new ArrayList<Card>(cards);
         while (cardsMut.size() > 0) {
-            ArrayList<Card> set = new ArrayList<Card>();
+            ArrayList<Card> set = new ArrayList<Card>(HAND_SIZE);
             set.add(cardsMut.remove(0));
             Value currentValue = set.get(0).getValue();
             for (int i = 0; i < cardsMut.size(); i++) {
@@ -135,61 +141,55 @@ public class Player {
         // Check for four of a kind
         for (int i = 0; i < sets.size(); i++) {
             ArrayList<Card> set = sets.get(i);
-            if (set.size() >= 4) {
+            if (set.size() >= SET_4_SIZE) {
+                // If set is largest values than add next largest
                 if (i == 0) {
                     set.add(sets.get(1).get(0));
                 } else {
-                    set.add(0, sets.get(0).get(0));
+                    // If set is not largest numbers add largest value
+                    set.add(sets.get(0).get(0));
                 }
-                Card[] combo = set.toArray(new Card[set.size()]);
-                return new Strength(Rank.FOUR_OF_A_KIND, combo);
+                return new Strength(Rank.FOUR_OF_A_KIND, set.toArray(new Card[HAND_SIZE]));
             }
         }
 
         // Check for full house
         ArrayList<Card> setOf2 = null;
         ArrayList<Card> setOf3 = null;
-        Card[] cards = new Card[5];
+        Card[] fullHouseCards = new Card[HAND_SIZE];
         for (int i = 0; i < sets.size(); i++) {
             ArrayList<Card> set = sets.get(i);
-            int k = 0;
             // If set of 3 found and needed
             if (setOf3 == null && set.size() >= 3) {
                 setOf3 = set;
-                if (setOf2 != null) {
-                    // If don't have a set of 2 put in last slot
-                    k = 2;
-                }
-                for (int j = 0; j < 3; j++) {
-                    cards[j + k] = set.get(j);
+                for (int j = 0; j < SET_3_SIZE; j++) {
+                    fullHouseCards[j] = set.get(j);
                 }
             } else if (setOf2 == null && set.size() >= 2) {
                 // If set of 2 found and needed
                 setOf2 = sets.remove(i);
                 i--;
-                if (setOf3 != null) {
-                    // If don't have a set of 3 put in last slot
-                    k = 3;
-                    // Remove set from list to be able to test for two pair later
-                }
-                for (int j = 0; j < 2; j++) {
-                    cards[j + k] = set.get(j);
+                // When comparing full houses you evaluate the set of 3 first
+                for (int j = 0; j < SET_2_SIZE; j++) {
+                    fullHouseCards[j + SET_3_SIZE] = set.get(j);
                 }
             } else {
                 continue;
             }
+            // If have both a set of 2 and 3 then declare full house
             if (setOf2 != null && setOf3 != null) {
-                return new Strength(Rank.FULL_HOUSE, cards);
+                return new Strength(Rank.FULL_HOUSE, fullHouseCards);
             }
         }
 
         // Check for flush
         if (flushCards != null) {
-            while (flushCards.size() > 5) {
-                flushCards.remove(0);
+            Card[] highFlushCards = new Card[HAND_SIZE];
+            // Take the top 5 highest cards of the flush
+            for (int i = 0; i < HAND_SIZE; i++) {
+                highFlushCards[i] = flushCards.get(i);
             }
-            Card[] returnCards = flushCards.toArray(new Card[flushCards.size()]);
-            return new Strength(Rank.FLUSH, returnCards);
+            return new Strength(Rank.FLUSH, highFlushCards);
         }
 
         // Check for straight
@@ -199,67 +199,50 @@ public class Player {
         }
 
         // Check for three of a kind
+        // Use already done calculation from full house
         if (setOf3 != null) {
             int i = 0;
-            while (setOf3.size() < 5) {
+            while (setOf3.size() < HAND_SIZE) {
+                // Get the largest cards that aren't in the set of 3
                 Card card = cardsInPlay.get(i);
                 if (!setOf3.contains(card)) {
-                    setOf3.add(i, cardsInPlay.get(i));
+                    setOf3.add(cardsInPlay.get(i));
                 }
                 i++;
             }
-            return new Strength(Rank.THREE_OF_A_KIND, setOf3.toArray(new Card[setOf3.size()]));
+            return new Strength(Rank.THREE_OF_A_KIND, setOf3.toArray(new Card[HAND_SIZE]));
         }
 
         // Check for two pair and pair
+        // Use already done calculation from full house
         if (setOf2 != null) {
-            // Initialize returnCards
-            ArrayList<Card> returnCards = new ArrayList<Card>();
-            for (int i = 0; i < setOf2.size(); i++) {
-                returnCards.add(setOf2.get(i));
-            }
+            Rank pairRank = Rank.PAIR;
             // Check other sets to see if there is another pair
             for (ArrayList<Card> set : sets) {
-                // If there is check to see if right highValue is set then return
-                if (set.size() >= 2) {
-                    for (int i = 0; i < set.size(); i++) {
-                        returnCards.add(set.get(i));
-                    }
-                    int i = 0;
-                    while (returnCards.size() < 5) {
-                        Card card = cardsInPlay.get(i);
-                        if (!returnCards.contains(card)) {
-                            returnCards.add(i, cardsInPlay.get(i));
-                        }
-                        i++;
-                    }
-                    return new Strength(Rank.TWO_PAIR, returnCards.toArray(new Card[returnCards.size()]));
+                if (set.size() == SET_2_SIZE) {
+                    setOf2.addAll(set);
+                    pairRank = Rank.TWO_PAIR;
                 }
             }
             // If no second pair found return a standard pair
+            // Fill up rest of ArrayList
             int i = 0;
-            while (returnCards.size() < 5) {
+            while (setOf2.size() < HAND_SIZE) {
                 Card card = cardsInPlay.get(i);
-                if (!returnCards.contains(card)) {
-                    returnCards.add(i, cardsInPlay.get(i));
+                if (!setOf2.contains(card)) {
+                    // Get the largest cards that aren't in the set of 2
+                    setOf2.add(cardsInPlay.get(i));
                 }
                 i++;
             }
-            return new Strength(Rank.PAIR, returnCards.toArray(new Card[returnCards.size()]));
+            return new Strength(pairRank, setOf2.toArray(new Card[HAND_SIZE]));
         }
+
         // If no hands are found just return the highest value card
-        Card[] returnCards = new Card[5];
-        for (int i = 0; i < 5; i++) {
+        Card[] returnCards = new Card[HAND_SIZE];
+        for (int i = 0; i < HAND_SIZE; i++) {
             returnCards[i] = cardsInPlay.get(i);
         }
         return new Strength(Rank.HIGH_CARD, returnCards);
-    }
-
-    public Card[] getHand() {
-        return this.hand;
-    }
-
-    public void setHand(Card[] cards) {
-        this.hand = cards;
     }
 }

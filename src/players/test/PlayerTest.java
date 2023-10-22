@@ -212,9 +212,9 @@ public class PlayerTest {
         Card[] hand = new Card[5];
         hand[0] = new Card(Suit.DIAMOND, Value.ACE);
         hand[1] = new Card(Suit.CLUB, Value.ACE);
-        hand[2] = new Card(Suit.CLUB, Value.QUEEN);
-        hand[3] = new Card(Suit.HEART, Value.NINE);
-        hand[4] = new Card(Suit.CLUB, Value.NINE);
+        hand[2] = new Card(Suit.HEART, Value.NINE);
+        hand[3] = new Card(Suit.CLUB, Value.NINE);
+        hand[4] = new Card(Suit.CLUB, Value.QUEEN);
         Strength expected = new Strength(Rank.TWO_PAIR, hand);
 
         // execute
@@ -238,9 +238,9 @@ public class PlayerTest {
         Card[] hand = new Card[5];
         hand[0] = new Card(Suit.DIAMOND, Value.ACE);
         hand[1] = new Card(Suit.CLUB, Value.ACE);
-        hand[2] = new Card(Suit.SPADE, Value.KING);
-        hand[3] = new Card(Suit.HEART, Value.NINE);
-        hand[4] = new Card(Suit.CLUB, Value.NINE);
+        hand[2] = new Card(Suit.HEART, Value.NINE);
+        hand[3] = new Card(Suit.CLUB, Value.NINE);
+        hand[4] = new Card(Suit.SPADE, Value.KING);
         Strength expected = new Strength(Rank.TWO_PAIR, hand);
 
         // execute
@@ -260,11 +260,11 @@ public class PlayerTest {
         cards.add(new Card(Suit.HEART, Value.NINE));
         cards.add(new Card(Suit.CLUB, Value.NINE));
         Card[] hand = new Card[5];
-        hand[0] = new Card(Suit.CLUB, Value.ACE);
-        hand[1] = new Card(Suit.CLUB, Value.QUEEN);
-        hand[2] = new Card(Suit.DIAMOND, Value.NINE);
-        hand[3] = new Card(Suit.HEART, Value.NINE);
-        hand[4] = new Card(Suit.CLUB, Value.NINE);
+        hand[0] = new Card(Suit.DIAMOND, Value.NINE);
+        hand[1] = new Card(Suit.HEART, Value.NINE);
+        hand[2] = new Card(Suit.CLUB, Value.NINE);
+        hand[3] = new Card(Suit.CLUB, Value.ACE);
+        hand[4] = new Card(Suit.CLUB, Value.QUEEN);
         Strength expected = new Strength(Rank.THREE_OF_A_KIND, hand);
 
         // execute
@@ -285,10 +285,10 @@ public class PlayerTest {
         cards.add(new Card(Suit.SPADE, Value.TWO));
         cards.add(new Card(Suit.CLUB, Value.NINE));
         Card[] hand = new Card[5];
-        hand[0] = new Card(Suit.CLUB, Value.QUEEN);
-        hand[1] = new Card(Suit.DIAMOND, Value.NINE);
-        hand[2] = new Card(Suit.HEART, Value.NINE);
-        hand[3] = new Card(Suit.CLUB, Value.NINE);
+        hand[0] = new Card(Suit.DIAMOND, Value.NINE);
+        hand[1] = new Card(Suit.HEART, Value.NINE);
+        hand[2] = new Card(Suit.CLUB, Value.NINE);
+        hand[3] = new Card(Suit.CLUB, Value.QUEEN);
         hand[4] = new Card(Suit.CLUB, Value.FOUR);
         Strength expected = new Strength(Rank.THREE_OF_A_KIND, hand);
 
@@ -311,11 +311,11 @@ public class PlayerTest {
         cards.add(new Card(Suit.SPADE, Value.KING));
         cards.add(new Card(Suit.CLUB, Value.NINE));
         Card[] hand = new Card[5];
-        hand[0] = new Card(Suit.CLUB, Value.ACE);
-        hand[1] = new Card(Suit.SPADE, Value.KING);
-        hand[2] = new Card(Suit.DIAMOND, Value.NINE);
-        hand[3] = new Card(Suit.HEART, Value.NINE);
-        hand[4] = new Card(Suit.CLUB, Value.NINE);
+        hand[0] = new Card(Suit.DIAMOND, Value.NINE);
+        hand[1] = new Card(Suit.HEART, Value.NINE);
+        hand[2] = new Card(Suit.CLUB, Value.NINE);
+        hand[3] = new Card(Suit.CLUB, Value.ACE);
+        hand[4] = new Card(Suit.SPADE, Value.KING);
         Strength expected = new Strength(Rank.THREE_OF_A_KIND, hand);
 
         // execute
@@ -585,11 +585,11 @@ public class PlayerTest {
         cards.add(new Card(Suit.HEART, Value.NINE));
         cards.add(new Card(Suit.DIAMOND, Value.QUEEN));
         Card[] hand = new Card[5];
-        hand[0] = new Card(Suit.CLUB, Value.ACE);
-        hand[1] = new Card(Suit.CLUB, Value.QUEEN);
-        hand[2] = new Card(Suit.HEART, Value.QUEEN);
-        hand[3] = new Card(Suit.SPADE, Value.QUEEN);
-        hand[4] = new Card(Suit.DIAMOND, Value.QUEEN);
+        hand[0] = new Card(Suit.CLUB, Value.QUEEN);
+        hand[1] = new Card(Suit.HEART, Value.QUEEN);
+        hand[2] = new Card(Suit.SPADE, Value.QUEEN);
+        hand[3] = new Card(Suit.DIAMOND, Value.QUEEN);
+        hand[4] = new Card(Suit.CLUB, Value.ACE);
         Strength expected = new Strength(Rank.FOUR_OF_A_KIND, hand);
 
         // execute
@@ -611,11 +611,11 @@ public class PlayerTest {
         cards.add(new Card(Suit.SPADE, Value.QUEEN));
         cards.add(new Card(Suit.DIAMOND, Value.QUEEN));
         Card[] hand = new Card[5];
-        hand[0] = new Card(Suit.CLUB, Value.ACE);
-        hand[1] = new Card(Suit.CLUB, Value.QUEEN);
-        hand[2] = new Card(Suit.HEART, Value.QUEEN);
-        hand[3] = new Card(Suit.SPADE, Value.QUEEN);
-        hand[4] = new Card(Suit.DIAMOND, Value.QUEEN);
+        hand[0] = new Card(Suit.CLUB, Value.QUEEN);
+        hand[1] = new Card(Suit.HEART, Value.QUEEN);
+        hand[2] = new Card(Suit.SPADE, Value.QUEEN);
+        hand[3] = new Card(Suit.DIAMOND, Value.QUEEN);
+        hand[4] = new Card(Suit.CLUB, Value.ACE);
         Strength expected = new Strength(Rank.FOUR_OF_A_KIND, hand);
 
         // execute
