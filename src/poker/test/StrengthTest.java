@@ -88,119 +88,212 @@ public class StrengthTest {
 
     @Test
     public void hardHighCard() {
-        Strength hard1 = new Strength(Rank.HIGH_CARD,
+        Strength hand1 = new Strength(Rank.HIGH_CARD,
                 new Card[] { new Card(Suit.CLUB, Value.ACE), new Card(Suit.CLUB, Value.EIGHT) });
-        Strength hard2 = new Strength(Rank.HIGH_CARD,
+        Strength hand2 = new Strength(Rank.HIGH_CARD,
                 new Card[] { new Card(Suit.SPADE, Value.ACE), new Card(Suit.CLUB, Value.TWO) });
         int expected = 1;
-        assertSame(expected, hard1.compareTo(hard2));
+        assertSame(expected, hand1.compareTo(hand2));
     }
 
     @Test
     public void hardPair() {
-        Strength hard1 = new Strength(Rank.PAIR, new Card[] { new Card(Suit.CLUB, Value.ACE),
+        Strength hand1 = new Strength(Rank.PAIR, new Card[] { new Card(Suit.CLUB, Value.ACE),
                 new Card(Suit.DIAMOND, Value.ACE), new Card(Suit.HEART, Value.FOUR) });
-        Strength hard2 = new Strength(Rank.PAIR, new Card[] { new Card(Suit.SPADE, Value.ACE),
+        Strength hand2 = new Strength(Rank.PAIR, new Card[] { new Card(Suit.SPADE, Value.ACE),
                 new Card(Suit.HEART, Value.ACE), new Card(Suit.HEART, Value.THREE) });
         int expected = 1;
-        assertSame(expected, hard1.compareTo(hard2));
+        assertSame(expected, hand1.compareTo(hand2));
     }
 
     @Test
     public void hardTwoPair() {
-        Strength hard1 = new Strength(Rank.TWO_PAIR,
+        Strength hand1 = new Strength(Rank.TWO_PAIR,
                 new Card[] { new Card(Suit.CLUB, Value.ACE), new Card(Suit.DIAMOND, Value.ACE),
                         new Card(Suit.SPADE, Value.THREE), new Card(Suit.DIAMOND, Value.THREE),
                         new Card(Suit.HEART, Value.FOUR) });
-        Strength hard2 = new Strength(Rank.TWO_PAIR,
+        Strength hand2 = new Strength(Rank.TWO_PAIR,
                 new Card[] { new Card(Suit.SPADE, Value.ACE), new Card(Suit.HEART, Value.ACE),
                         new Card(Suit.HEART, Value.THREE), new Card(Suit.CLUB, Value.THREE),
                         new Card(Suit.CLUB, Value.TWO) });
         int expected = 1;
-        assertSame(expected, hard1.compareTo(hard2));
+        assertSame(expected, hand1.compareTo(hand2));
     }
 
     @Test
     public void hardThreeOfAKind() {
-        Strength hard1 = new Strength(Rank.THREE_OF_A_KIND,
+        Strength hand1 = new Strength(Rank.THREE_OF_A_KIND,
                 new Card[] { new Card(Suit.CLUB, Value.ACE), new Card(Suit.DIAMOND, Value.ACE),
                         new Card(Suit.SPADE, Value.ACE), new Card(Suit.DIAMOND, Value.THREE) });
-        Strength hard2 = new Strength(Rank.THREE_OF_A_KIND,
+        Strength hand2 = new Strength(Rank.THREE_OF_A_KIND,
                 new Card[] { new Card(Suit.SPADE, Value.THREE), new Card(Suit.DIAMOND, Value.THREE),
                         new Card(Suit.HEART, Value.THREE), new Card(Suit.CLUB, Value.FIVE) });
         int expected = 1;
-        assertSame(expected, hard1.compareTo(hard2));
+        assertSame(expected, hand1.compareTo(hand2));
     }
 
     @Test
     public void hardStraight() {
-        Strength hard1 = new Strength(Rank.STRAIGHT,
+        Strength hand1 = new Strength(Rank.STRAIGHT,
                 new Card[] { new Card(Suit.CLUB, Value.ACE), new Card(Suit.DIAMOND, Value.KING),
                         new Card(Suit.SPADE, Value.QUEEN), new Card(Suit.DIAMOND, Value.JACK),
                         new Card(Suit.DIAMOND, Value.TEN) });
-        Strength hard2 = new Strength(Rank.STRAIGHT,
+        Strength hand2 = new Strength(Rank.STRAIGHT,
                 new Card[] { new Card(Suit.SPADE, Value.SIX), new Card(Suit.DIAMOND, Value.FIVE),
                         new Card(Suit.HEART, Value.FOUR), new Card(Suit.CLUB, Value.THREE),
                         new Card(Suit.CLUB, Value.TWO) });
         int expected = 1;
-        assertSame(expected, hard1.compareTo(hard2));
+        assertSame(expected, hand1.compareTo(hand2));
     }
 
     @Test
     public void hardFlush() {
-        Strength hard1 = new Strength(Rank.FLUSH,
+        Strength hand1 = new Strength(Rank.FLUSH,
                 new Card[] { new Card(Suit.CLUB, Value.ACE), new Card(Suit.CLUB, Value.KING),
                         new Card(Suit.CLUB, Value.QUEEN), new Card(Suit.CLUB, Value.JACK),
                         new Card(Suit.CLUB, Value.NINE) });
-        Strength hard2 = new Strength(Rank.FLUSH,
+        Strength hand2 = new Strength(Rank.FLUSH,
                 new Card[] { new Card(Suit.SPADE, Value.ACE), new Card(Suit.SPADE, Value.KING),
                         new Card(Suit.SPADE, Value.QUEEN), new Card(Suit.SPADE, Value.JACK),
                         new Card(Suit.SPADE, Value.EIGHT) });
         int expected = 1;
-        assertSame(expected, hard1.compareTo(hard2));
+        assertSame(expected, hand1.compareTo(hand2));
     }
 
     @Test
     public void hardFullHouse() {
-        Strength hard1 = new Strength(Rank.FULL_HOUSE,
+        Strength hand1 = new Strength(Rank.FULL_HOUSE,
                 new Card[] { new Card(Suit.CLUB, Value.ACE), new Card(Suit.DIAMOND, Value.ACE),
                         new Card(Suit.HEART, Value.ACE), new Card(Suit.CLUB, Value.JACK),
                         new Card(Suit.SPADE, Value.JACK) });
-        Strength hard2 = new Strength(Rank.FULL_HOUSE,
+        Strength hand2 = new Strength(Rank.FULL_HOUSE,
                 new Card[] { new Card(Suit.SPADE, Value.KING), new Card(Suit.CLUB, Value.KING),
                         new Card(Suit.DIAMOND, Value.KING), new Card(Suit.HEART, Value.JACK),
                         new Card(Suit.DIAMOND, Value.JACK) });
         int expected = 1;
-        assertSame(expected, hard1.compareTo(hard2));
+        assertSame(expected, hand1.compareTo(hand2));
     }
 
     @Test
     public void hardFourOfAKind() {
-        Strength hard1 = new Strength(Rank.FOUR_OF_A_KIND,
+        Strength hand1 = new Strength(Rank.FOUR_OF_A_KIND,
                 new Card[] { new Card(Suit.CLUB, Value.ACE), new Card(Suit.DIAMOND, Value.ACE),
                         new Card(Suit.HEART, Value.ACE), new Card(Suit.SPADE, Value.ACE),
                         new Card(Suit.SPADE, Value.JACK) });
-        Strength hard2 = new Strength(Rank.FOUR_OF_A_KIND,
+        Strength hand2 = new Strength(Rank.FOUR_OF_A_KIND,
                 new Card[] { new Card(Suit.SPADE, Value.KING), new Card(Suit.CLUB, Value.KING),
                         new Card(Suit.DIAMOND, Value.KING), new Card(Suit.HEART, Value.KING),
                         new Card(Suit.DIAMOND, Value.JACK) });
         int expected = 1;
-        assertSame(expected, hard1.compareTo(hard2));
+        assertSame(expected, hand1.compareTo(hand2));
     }
 
     @Test
     public void hardStraightFlush() {
-        Strength hard1 = new Strength(Rank.STRAIGHT_FLUSH,
+        Strength hand1 = new Strength(Rank.STRAIGHT_FLUSH,
                 new Card[] { new Card(Suit.CLUB, Value.KING), new Card(Suit.CLUB, Value.QUEEN),
                         new Card(Suit.CLUB, Value.JACK), new Card(Suit.CLUB, Value.TEN),
                         new Card(Suit.CLUB, Value.NINE) });
-        Strength hard2 = new Strength(Rank.STRAIGHT_FLUSH,
+        Strength hand2 = new Strength(Rank.STRAIGHT_FLUSH,
                 new Card[] { new Card(Suit.CLUB, Value.EIGHT), new Card(Suit.CLUB, Value.SEVEN),
                         new Card(Suit.CLUB, Value.SIX), new Card(Suit.CLUB, Value.FIVE),
                         new Card(Suit.CLUB, Value.FOUR) });
         int expected = 1;
-        assertSame(expected, hard1.compareTo(hard2));
+        assertSame(expected, hand1.compareTo(hand2));
     }
 
     // hardRoyalFlush isn't possible to do because royal flush's always equal each other
+
+    @Test
+    public void equalHighCard() {
+        Strength hand1 = new Strength(Rank.HIGH_CARD,
+                new Card[] { new Card(Suit.CLUB, Value.ACE), new Card(Suit.CLUB, Value.EIGHT) });
+        Strength hand2 = new Strength(Rank.HIGH_CARD,
+                new Card[] { new Card(Suit.SPADE, Value.ACE), new Card(Suit.DIAMOND, Value.EIGHT) });
+        int expected = 0;
+        assertSame(expected, hand1.compareTo(hand2));
+    }
+
+    @Test
+    public void equalPair() {
+        Strength hand1 = new Strength(Rank.PAIR,
+                new Card[] { new Card(Suit.CLUB, Value.ACE), new Card(Suit.DIAMOND, Value.ACE) });
+        Strength hand2 = new Strength(Rank.PAIR,
+                new Card[] { new Card(Suit.SPADE, Value.ACE), new Card(Suit.HEART, Value.ACE) });
+        int expected = 0;
+        assertSame(expected, hand1.compareTo(hand2));
+    }
+
+    @Test
+    public void equalTwoPair() {
+        Strength hand1 = new Strength(Rank.TWO_PAIR,
+                new Card[] { new Card(Suit.CLUB, Value.ACE), new Card(Suit.DIAMOND, Value.ACE),
+                        new Card(Suit.CLUB, Value.KING), new Card(Suit.DIAMOND, Value.KING) });
+        Strength hand2 = new Strength(Rank.TWO_PAIR, new Card[] { new Card(Suit.SPADE, Value.ACE),
+                new Card(Suit.HEART, Value.ACE), new Card(Suit.SPADE, Value.KING), new Card(Suit.HEART, Value.KING) });
+        int expected = 0;
+        assertSame(expected, hand1.compareTo(hand2));
+    }
+
+    // equalThreeOfAKind isn't possible due to their only being 4 cards of the same value
+
+    @Test
+    public void equalStraight() {
+        Strength hand1 = new Strength(Rank.STRAIGHT,
+                new Card[] { new Card(Suit.CLUB, Value.ACE), new Card(Suit.DIAMOND, Value.KING),
+                        new Card(Suit.SPADE, Value.QUEEN), new Card(Suit.DIAMOND, Value.JACK),
+                        new Card(Suit.DIAMOND, Value.TEN) });
+        Strength hand2 = new Strength(Rank.STRAIGHT,
+                new Card[] { new Card(Suit.DIAMOND, Value.ACE), new Card(Suit.CLUB, Value.KING),
+                        new Card(Suit.CLUB, Value.QUEEN), new Card(Suit.CLUB, Value.JACK),
+                        new Card(Suit.SPADE, Value.TEN) });
+        int expected = 0;
+        assertSame(expected, hand1.compareTo(hand2));
+    }
+
+    @Test
+    public void equalFlush() {
+        Strength hand1 = new Strength(Rank.FLUSH,
+                new Card[] { new Card(Suit.CLUB, Value.ACE), new Card(Suit.CLUB, Value.KING),
+                        new Card(Suit.CLUB, Value.QUEEN), new Card(Suit.CLUB, Value.JACK),
+                        new Card(Suit.CLUB, Value.NINE) });
+        Strength hand2 = new Strength(Rank.FLUSH,
+                new Card[] { new Card(Suit.SPADE, Value.ACE), new Card(Suit.SPADE, Value.KING),
+                        new Card(Suit.SPADE, Value.QUEEN), new Card(Suit.SPADE, Value.JACK),
+                        new Card(Suit.SPADE, Value.NINE) });
+        int expected = 0;
+        assertSame(expected, hand1.compareTo(hand2));
+    }
+
+    // equalFullHouse isn't possible due to their only being 4 cards of the same value
+
+    // equalFourOfAKind isn't possible due to their only being 4 cards of the same value
+
+    @Test
+    public void equalStraightFlush() {
+        Strength hand1 = new Strength(Rank.STRAIGHT_FLUSH,
+                new Card[] { new Card(Suit.CLUB, Value.KING), new Card(Suit.CLUB, Value.QUEEN),
+                        new Card(Suit.CLUB, Value.JACK), new Card(Suit.CLUB, Value.TEN),
+                        new Card(Suit.CLUB, Value.NINE) });
+        Strength hand2 = new Strength(Rank.STRAIGHT_FLUSH,
+                new Card[] { new Card(Suit.SPADE, Value.KING), new Card(Suit.SPADE, Value.QUEEN),
+                        new Card(Suit.SPADE, Value.JACK), new Card(Suit.SPADE, Value.TEN),
+                        new Card(Suit.SPADE, Value.NINE) });
+        int expected = 0;
+        assertSame(expected, hand1.compareTo(hand2));
+    }
+
+    @Test
+    public void equalRoyalFlush() {
+        Strength hand1 = new Strength(Rank.STRAIGHT_FLUSH,
+                new Card[] { new Card(Suit.CLUB, Value.KING), new Card(Suit.CLUB, Value.QUEEN),
+                        new Card(Suit.CLUB, Value.JACK), new Card(Suit.CLUB, Value.TEN),
+                        new Card(Suit.CLUB, Value.NINE) });
+        Strength hand2 = new Strength(Rank.STRAIGHT_FLUSH,
+                new Card[] { new Card(Suit.SPADE, Value.KING), new Card(Suit.SPADE, Value.QUEEN),
+                        new Card(Suit.SPADE, Value.JACK), new Card(Suit.SPADE, Value.TEN),
+                        new Card(Suit.SPADE, Value.NINE) });
+        int expected = 0;
+        assertSame(expected, hand1.compareTo(hand2));
+    }
 }
